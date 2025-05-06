@@ -8,6 +8,9 @@ app = Flask(__name__)
 load_dotenv()
 Api_Key = os.getenv("Api_Key")
 
+load_dotenv()
+Google_Api= os.getenv("Google_Api")
+
 def get_weather(ido,keido):
     url = f"https://api.openweathermap.org/data/2.5/weather?lat={ido}&lon={keido}&appid={Api_Key}&units=metric&lang=ja"
     
@@ -35,7 +38,7 @@ def index():
         lat = request.form["lat"]
         lon = request.form["lon"]
         result = get_weather(lat,lon)  
-    return render_template("index.html", result=result)
+    return render_template("index.html", result=result, google_api_key = Google_Api)
    
 if __name__ == "__main__":
     app.run(debug=True)
