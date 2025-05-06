@@ -1,51 +1,54 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="UTF-8">
-    <title>天気アプリ</title>
-    <style>
-        #map {
-          height: 400px;
-          width: 100%;
-          margin-top: 20px;
-        }
-      </style>
+  <meta charset="UTF-8">
+  <title>天気検索と地図表示</title>
+  <style>
+    #map {
+      height: 400px;
+      width: 100%;
+      margin-top: 20px;
+    }
+  </style>
 </head>
 <body>
-    <h1>天気検索フォーム</h1>
-    <form method="post">
-        <input type="text" name="lat" placeholder="緯度を入力してください">
-        <input type="text" name="lon" placeholder="経度を入力">
-        <button type="submit">検索</button>
-    </form>
-    <p>{{ result }}</p>
+  <h1>天気検索フォーム</h1>
+  <form method="post">
+    <input type="text" name="lat" placeholder="緯度を入力してください" value="{{ request.form.lat or '' }}">
+    <input type="text" name="lon" placeholder="経度を入力" value="{{ request.form.lon or '' }}">
+    <button type="submit">検索</button>
+  </form>
 
+  <p>{{ result }}</p>
 
-    {% if result %}
+  {% if result %}
     <div id="map"></div>
   {% endif %}
 
   {% if request.form.lat and request.form.lon %}
-  <script>
-    function initMap() {
-      const location = {
-        lat: parseFloat("{{ request.form.lat }}"),
-        lng: parseFloat("{{ request.form.lon }}")
-      };
-      const map = new google.maps.Map(document.getElementById("map"), {
-        zoom: 10,
-        center: location
-      });
-      new google.maps.Marker({
-        position: location,
-        map: map
-      });
-    }
-  </script>
-
-  <script async
-    src="https://maps.googleapis.com/maps/api/js?key={{ google_api_key }}&callback=initMap">
-  </script>
+    <script>
+      function initMap() {
+        const location = {
+          lat: parseFloat("{{ request.form.lat }}"),
+          lng: parseFloat("{{ request.form.lon }}")
+        };
+        const map = new google.maps.Map(document.getElementById("map"), {
+          zoom: 10,
+          center: location
+        });
+        new google.maps.Marker({
+          position: location,
+          map: map
+        });
+      }
+    </script>
+    <script async
+      src="https://maps.googleapis.com/maps/api/js?key={{ google_api_key }}&callback=initMap">
+    </script>
   {% endif %}
 </body>
 </html>
+
+
+
+
