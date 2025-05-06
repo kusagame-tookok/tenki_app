@@ -1,8 +1,15 @@
 <!DOCTYPE html>
-<html>
+<html lang="ja">
 <head>
     <meta charset="UTF-8">
     <title>天気アプリ</title>
+    <style>
+        #map {
+          height: 400px;
+          width: 100%;
+          margin-top: 20px;
+        }
+      </style>
 </head>
 <body>
     <h1>天気検索フォーム</h1>
@@ -12,5 +19,33 @@
         <button type="submit">検索</button>
     </form>
     <p>{{ result }}</p>
+
+
+    {% if result %}
+    <div id="map"></div>
+  {% endif %}
+
+  {% if request.form.lat and request.form.lon %}
+  <script>
+    function initMap() {
+      const location = {
+        lat: parseFloat("{{ request.form.lat }}"),
+        lng: parseFloat("{{ request.form.lon }}")
+      };
+      const map = new google.maps.Map(document.getElementById("map"), {
+        zoom: 10,
+        center: location
+      });
+      new google.maps.Marker({
+        position: location,
+        map: map
+      });
+    }
+  </script>
+
+  <script async
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAtCpCVjHGQc-N1ThrPAuT0md7i35Gw9ZU&callback=initMap">
+  </script>
+  {% endif %}
 </body>
 </html>
